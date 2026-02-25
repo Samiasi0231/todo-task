@@ -1,68 +1,79 @@
-# 📋 Todo Board — 3D Project Management App
+This project is a personal To-Do List Application with a 3D experience, built to help users develop positive habits through accountability and consistency.
+The application allows users to manage daily tasks while enjoying a modern UI and an immersive 3D background experience.
+This project was built as part of a frontend assessment using Next.js App Router.
 
-A pixel-perfect implementation of the Figma design with React Three Fiber 3D integration.
+ Features
+ Authentication
+Simple login and registration pages
+Users can create an account
+Users can log in to access their tasks
+Clean and modern authentication UI
 
-## Stack
-- **Next.js 14** (App Router, Server + Client Components)
-- **Tailwind CSS** — all layout and styling
-- **MUI** — Modal/form elements in AddTask dialog
-- **Redux Toolkit** — global state (tasks + UI)
-- **React Three Fiber + Three.js** — animated 3D background scene
-- **Font** — Exo 2 (Google Fonts)
+ To-Do Management
+Users can:
+Add tasks
+Edit tasks
 
-## Features
-- ✅ Kanban board with To Do / In Progress / Done columns
-- ✅ Drag & drop tasks between columns (HTML5 native DnD)
-- ✅ Add / Edit / Delete tasks via modal
-- ✅ Progress bars with status-aware colors (orange → red → green)
-- ✅ Assignee avatar stacks
-- ✅ Light / Dark mode toggle (persisted to localStorage)
-- ✅ Tasks persisted to localStorage
-- 🎮 **3D Background**: 22 wireframe geometric shapes (boxes, spheres, tori, octahedra) float and rotate. Their color shifts from 🟠 orange → 🟣 indigo → 🟢 green as overall task completion % increases.
+Delete tasks
+Mark tasks as completed
+The to-do system helps users stay organized and focused.
+ Habit Building
+This app is designed not just as a to-do list but as a habit-building tool.
+Forming positive habits is important because:
 
-## Getting Started
+Habits improve productivity
+Habits improve discipline
+Habits create consistency
+Habits help achieve long-term goals
+The app encourages daily accountability, which is one of the strongest ways to build positive habits.
+By completing tasks daily, users can track their progress and stay motivated.
 
-```bash
-npm install
-npm run dev
-```
+ 3D Experience
+The app includes a 3D background experience to make the interface more engaging.
+The 3D scene adds:
+Visual creativity
+Modern UI experience
+Interactive feel
+Unique design
 
-Open [http://localhost:3000](http://localhost:3000)
+The 3D component is implemented using React Three Fiber.
+ Technologies Used
+This project was built using:
 
-## Project Structure
+Frontend
+Next.js (App Router)
+Tailwind CSS
+Redux
 
-```
-app/
-  layout.tsx          # Root layout (providers, font)
-  page.tsx            # Server Component entry
-  globals.css         # Tailwind + Exo 2 import + custom classes
+3D Graphics
+Three.js
+React Three Fiber
 
-components/
-  providers/
-    ReduxProvider.tsx # Redux store wrapper
-    ThemeSync.tsx     # Syncs Redux theme → <html class>
-  layout/
-    MainLayout.tsx    # Top-level layout orchestrator
-    IconStrip.tsx     # Left narrow icon navigation strip
-    Sidebar.tsx       # Dark sidebar with Projects/Tasks nav
-    Header.tsx        # Greeting, date, board view tabs
-  board/
-    BoardView.tsx     # 3-column kanban wrapper
-    TaskColumn.tsx    # Single column with DnD drop zone
-    TaskCard.tsx      # Individual task card
-    AddTaskModal.tsx  # Add/edit task modal form
-  three/
-    Scene3D.tsx       # React Three Fiber 3D background
-  ui/
-    ProgressBar.tsx   # Animated colored progress bar
-    AvatarStack.tsx   # Overlapping assignee avatars
+ Tools Explanation
+Next.js
+Next.js was used to:
+Build the application structure
+Manage routing
+Improve performance
 
-store/
-  index.ts            # Redux store config
-  tasksSlice.ts       # Tasks CRUD + localStorage persistence
-  uiSlice.ts          # Theme, modals, navigation state
+Use App Router architecture
 
-types/index.ts        # TypeScript interfaces
-lib/initialData.ts    # Seed data matching Figma
-hooks/useTypedRedux.ts # Typed useDispatch / useSelector
-```
+Tailwind CSS
+Tailwind CSS was used for:
+Responsive design
+Fast UI development
+Clean styling
+
+Redux
+Redux was used for:
+State management
+Managing authentication state
+Managing tasks
+Redux helps keep the application organized and scalable.
+
+Three.js
+
+Three.js was used for:
+Creating the 3D background
+Making the app visually engaging
+I use React Three Fiber to integrate Three.js into the Next.js React application and create the interactive 3D background.
