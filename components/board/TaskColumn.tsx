@@ -36,7 +36,7 @@ export default function TaskColumn({ status, label, tasks, draggedTaskId }: Prop
   }
   const onCardDragStart = useCallback((_id: string) => {}, [])
 
-  // ── Tokens ───────────────────────────────────────────
+ 
   const labelC        = dark ? '#e5e7eb'                  : '#374151'
   const countC        = dark ? '#6b7280'                  : '#9ca3af'
   const addBtnC       = dark ? '#6b7280'                  : '#9ca3af'
@@ -49,7 +49,7 @@ export default function TaskColumn({ status, label, tasks, draggedTaskId }: Prop
   return (
     <div className="flex flex-col flex-1 min-w-[200px]">
 
-      {/* Column header */}
+  
       <div className="flex items-center justify-between mb-2 px-0.5">
         <div className="flex items-center gap-1.5">
           <span className="text-[13px] font-semibold font-exo" style={{ color: labelC }}>
@@ -75,10 +75,7 @@ export default function TaskColumn({ status, label, tasks, draggedTaskId }: Prop
         </button>
       </div>
 
-      {/*
-        Drop zone — single dashed border wraps ALL cards as one visual unit,
-        matching the design reference. Border shifts to indigo on drag-over.
-      */}
+    
       <div
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
@@ -96,7 +93,7 @@ export default function TaskColumn({ status, label, tasks, draggedTaskId }: Prop
           ))}
         </div>
 
-        {/* Empty state */}
+      
         {tasks.length === 0 && !over && (
           <div className="flex flex-col items-center justify-center min-h-[120px] gap-2">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -107,7 +104,7 @@ export default function TaskColumn({ status, label, tasks, draggedTaskId }: Prop
           </div>
         )}
 
-        {/* Drag-over indicator */}
+      
         {over && (
           <div
             className="flex items-center justify-center py-5 mt-2 rounded-xl border-2 border-dashed text-[12px] font-exo"

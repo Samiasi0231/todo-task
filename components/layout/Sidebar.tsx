@@ -13,7 +13,7 @@ import {
   SunIcon, MoonIcon,
 } from '@/components/sidebar/SidebarComponents'
 
-// ── Date helpers ──────────────────────────────────────────────────────────────
+
 const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
 function parseDue(dueDate: string): Date | null {
@@ -30,7 +30,6 @@ function startOfDay(d: Date) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate())
 }
 
-// ── Static messenger seed data ────────────────────────────────────────────────
 const MESSENGER_SECTIONS = [
   {
     id: 'msg-inbox', label: 'Inbox',
@@ -57,8 +56,9 @@ const MESSENGER_SECTIONS = [
   },
 ]
 
-// ── Component ─────────────────────────────────────────────────────────────────
-export default function Sidebar() {
+
+interface SidebarProps { onNavigate?: () => void }
+export default function Sidebar({ onNavigate }: SidebarProps = {}) {
   const dispatch = useAppDispatch()
   const { activeProject, activeTaskFilter, theme } = useAppSelector(s => s.ui)
   const tasks = useAppSelector(s => s.tasks.tasks)
@@ -71,13 +71,13 @@ export default function Sidebar() {
   const [activeReminder,  setActiveReminder]  = useState<string | null>(null)
   const [activeMessenger, setActiveMessenger] = useState<string | null>('msg-inbox')
 
-  // Track which messages the user has read this session
+  
   const [readIds, setReadIds] = useState<Set<string>>(new Set())
 
   const T    = theme === 'dark' ? TOKENS.dark : TOKENS.light
   const dark = theme === 'dark'
 
-  // ── Live task counts ──────────────────────────────────
+ 
   const counts = useMemo(() => ({
     all:        tasks.length,
     todo:       tasks.filter(t => t.status === 'todo').length,
@@ -92,7 +92,7 @@ export default function Sidebar() {
     { id: 'done',       label: 'Done',        count: counts.done       },
   ]
 
-  // ── Reminder buckets — derived from real task due dates ──
+
   const { reminderBuckets, reminderCounts } = useMemo(() => {
     const now     = startOfDay(new Date())
     const in7days = new Date(now); in7days.setDate(in7days.getDate() + 7)
@@ -131,13 +131,14 @@ export default function Sidebar() {
 
   const urgentCount = reminderCounts.today + reminderCounts.overdue
 
-  // ── Messenger unread count ────────────────────────────
+  
   const totalUnread = useMemo(() =>
     MESSENGER_SECTIONS[0].items.filter(m => !m.read && !readIds.has(m.id)).length
   , [readIds])
 
- const markRead = (id: string) =>
-  setReadIds(prev => new Set(Array.from(prev).concat(id)))
+  const markRead = (id: string) =>
+  setReadIds(prev => new Set([...Array.from(prev), id]));
+
   return (
     <aside
       className="w-full h-full flex flex-col select-none transition-colors duration-200"
@@ -162,12 +163,12 @@ export default function Sidebar() {
         </button>
       </div>
 
-      {/* ── Scrollable nav ── */}
+     
       <nav className="flex-1 overflow-y-auto px-3 pb-4" style={{ scrollbarWidth: 'none' }}>
 
         <PlainRow label="Team" T={T} />
 
-        {/* Projects */}
+      
         <SectionHead label="Projects" open={projectsOpen}
           onToggle={() => setProjectsOpen(v => !v)} T={T} />
         {projectsOpen && (
@@ -176,7 +177,7 @@ export default function Sidebar() {
               const active = activeProject === item.id
               return (
                 <TreeItem key={item.id} active={active} T={T}
-                  onClick={() => dispatch(setActiveProject(item.id))}>
+                  onClick={() => { dispatch(setActiveProject(item.id)); onNavigate?.() }}>
                   <span className="text-[13px] font-exo flex-1" style={{ fontWeight: active ? 600 : 400 }}>
                     {item.label}
                   </span>
@@ -189,7 +190,7 @@ export default function Sidebar() {
           </TreeList>
         )}
 
-        {/* Tasks */}
+      
         <SectionHead label="Tasks" open={tasksOpen}
           onToggle={() => setTasksOpen(v => !v)} T={T} />
         {tasksOpen && (
@@ -198,7 +199,7 @@ export default function Sidebar() {
               const active = activeTaskFilter === item.id
               return (
                 <TreeItem key={item.id} active={active} T={T}
-                  onClick={() => dispatch(setActiveTaskFilter(item.id))}>
+                  onClick={() => { dispatch(setActiveTaskFilter(item.id)); onNavigate?.() }}>
                   <span className="text-[13px] font-exo flex-1" style={{ fontWeight: active ? 600 : 400 }}>
                     {item.label}
                   </span>
@@ -211,7 +212,7 @@ export default function Sidebar() {
           </TreeList>
         )}
 
-        {/* ── Reminders ── */}
+       
         <button
           onClick={() => setRemindersOpen(v => !v)}
           className="w-full flex items-center justify-between px-2 py-[9px] rounded-lg text-[13px] font-bold font-exo outline-none transition-all duration-150"
@@ -257,7 +258,7 @@ export default function Sidebar() {
               })}
             </TreeList>
 
-            {/* Expanded task list under active reminder bucket */}
+         
             {activeReminder && (() => {
               const bucket = reminderBuckets[activeReminder as keyof typeof reminderBuckets] ?? []
               if (bucket.length === 0) return (
@@ -289,7 +290,7 @@ export default function Sidebar() {
           </>
         )}
 
-        {/* ── Messengers ── */}
+    
         <button
           onClick={() => setMessengersOpen(v => !v)}
           className="w-full flex items-center justify-between px-2 py-[9px] rounded-lg text-[13px] font-bold font-exo outline-none transition-all duration-150"
@@ -336,7 +337,7 @@ export default function Sidebar() {
               })}
             </TreeList>
 
-            {/* Message list for active section */}
+          
             {activeMessenger && (() => {
               const section = MESSENGER_SECTIONS.find(s => s.id === activeMessenger)
               if (!section) return null
@@ -390,7 +391,7 @@ export default function Sidebar() {
         )}
       </nav>
 
-      {/* ── Theme toggle ── */}
+   
       <div className="px-4 py-[14px] flex-shrink-0"
         style={{ borderTop: `1px solid ${T.divider}` }}>
         <div className="flex items-center rounded-xl p-[3px] gap-[3px]"
